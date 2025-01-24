@@ -33,7 +33,7 @@ var {version} = require('../package.json'),
 		proxy: null,
 		userAgent: `thuzi_nodejssdk/${version}`,
 		agent: null,
-		headers: null,
+		headers: {},
 	}),
 	emptyRateLimit = Object.assign(Object.create(null), {
 		callCount: 0,
@@ -388,7 +388,7 @@ class Facebook {
 
 		requestOptions = {
 			parse: false,
-			headers: []
+			headers: {}
 		};
 		if ( this.options('proxy') ) {
 			requestOptions['proxy'] = this.options('proxy');
@@ -398,6 +398,10 @@ class Facebook {
 		}
 		if ( this.options('headers') ) {
 			requestOptions['headers'] = this.options('headers');
+		}
+		if (params.headers){
+			requestOptions['headers'] = {...requestOptions['headers'], ...params.headers};
+			delete params.headers;
 		}
 		if ( this.options('userAgent') ) {
 			requestOptions['headers'] = {
